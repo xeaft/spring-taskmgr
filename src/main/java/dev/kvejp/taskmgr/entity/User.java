@@ -20,8 +20,7 @@ public class User {
     @OneToMany(mappedBy = "owner")
     public List<Task> tasks = new ArrayList<>();
 
-    public User() {
-    }
+    public User() {}
 
     public User(String username, String password) {
         this.username = username;
