@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,7 +24,7 @@
                     <a class="nav-link" href="/login">Login/Register</a>
                 </li>
             </ul>
-            <p>username.</span></p>
+            <p sec:authentication="name" class="navbar-text">
         </div>
     </div>
 </nav>

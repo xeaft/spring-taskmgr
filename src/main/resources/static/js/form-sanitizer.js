@@ -22,6 +22,10 @@ forms.forEach(function(form) {
         let formValid = validateFormDataCharacters("username", formData) && validateFormDataCharacters("task", formData);
 
         if (!formValid) {
+            let errorMessage = document.createElement("p");
+            errorMessage.textContent = "Invalid characters, use only letters and numbers";
+            errorMessage.style.color = "red";
+            form.appendChild(errorMessage);
             form.reset();
             return;
         }

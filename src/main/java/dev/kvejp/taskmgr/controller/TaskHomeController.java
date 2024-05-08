@@ -1,7 +1,7 @@
 package dev.kvejp.taskmgr.controller;
 
 import dev.kvejp.taskmgr.entity.Task;
-import dev.kvejp.taskmgr.entity.User;
+import dev.kvejp.taskmgr.entity.UserDTO;
 import dev.kvejp.taskmgr.repository.TaskRepository;
 import dev.kvejp.taskmgr.repository.UserRepository;
 import org.springframework.stereotype.Controller;
@@ -39,8 +39,8 @@ public class TaskHomeController {
 
 
         // TODO: login stuff...
-        List<User> users = userRepository.findAll();
-        User user = users.get(0);
+        List<UserDTO> users = userRepository.findAll();
+        UserDTO user = users.get(0);
 
         if (user == null) {
             return "/register";

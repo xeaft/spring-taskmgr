@@ -1,6 +1,6 @@
 package dev.kvejp.taskmgr.controller;
 
-import dev.kvejp.taskmgr.entity.User;
+import dev.kvejp.taskmgr.entity.UserDTO;
 import dev.kvejp.taskmgr.repository.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,7 @@ public class LoginController {
     public String loginPost(@RequestParam("username") String name, @RequestParam("password") String password) {
         // TODO: password hashing, just about everywhere
 
-        List<User> users = userRepository.findAll();
+        List<UserDTO> users = userRepository.findAll();
 
         if (users.stream().anyMatch(u -> u.getUsername().equals(name) && u.getPassword().equals(password))) {
             return "redirect:/";

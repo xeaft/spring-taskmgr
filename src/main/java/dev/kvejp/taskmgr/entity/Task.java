@@ -11,20 +11,20 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "OWNER_ID", nullable = false)
-    protected User owner;
+    protected UserDTO owner;
 
     @Column(name = "TASK_NAME", unique = true, nullable = false)
     protected String taskName;
 
     public Task(){}
 
-    public Task(User owner) {
+    public Task(UserDTO owner) {
         this.owner = owner;
         // TODO: number the untitled tasks for name duplication
         this.taskName = "Untitled";
     }
 
-    public Task(User owner, String taskName) {
+    public Task(UserDTO owner, String taskName) {
         this.owner = owner;
         this.taskName = taskName;
     }
@@ -33,7 +33,7 @@ public class Task {
         return id;
     }
 
-    public User getOwner() {
+    public UserDTO getOwner() {
         return owner;
     }
 
