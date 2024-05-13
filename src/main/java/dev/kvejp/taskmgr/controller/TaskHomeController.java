@@ -22,17 +22,15 @@ public class TaskHomeController {
     }
     @PostMapping("/create")
     public String createTask(@RequestParam String task) {
-        // TODO: add JS preventDefault call and len validation (keep this as well though)
         if (task == null || task.isEmpty() || task.length() > 50) {
             return "/tasks/create";
         }
 
         List<Task> tasks = taskRepository.findAll();
-        String taskName = task;
 
         // TODO: again, add clientside JS validation
         for (Task task1 : tasks) {
-            if (task1.getName().equals(taskName)) {
+            if (task1.getName().equals(task)) {
                 return "/tasks/create";
             }
         }
@@ -61,10 +59,5 @@ public class TaskHomeController {
         List<Task> tasks = taskRepository.findAll();
         model.addAttribute("tasks", tasks);
         return "tasks";
-    }
-
-    @GetMapping("/create")
-    public String taskCreatePage() {
-        return "taskCreate";
     }
 }

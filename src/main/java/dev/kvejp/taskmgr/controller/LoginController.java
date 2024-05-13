@@ -2,6 +2,7 @@ package dev.kvejp.taskmgr.controller;
 
 import dev.kvejp.taskmgr.entity.UserDTO;
 import dev.kvejp.taskmgr.repository.UserRepository;
+import dev.kvejp.taskmgr.service.AuthenticationService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,13 +15,19 @@ import java.util.List;
 @RequestMapping("/login")
 public class LoginController {
     protected final UserRepository userRepository;
+    protected final AuthenticationService authenticationService;
 
-    public LoginController(UserRepository userService) {
+    public LoginController(UserRepository userService, AuthenticationService authenticationService) {
         this.userRepository = userService;
+        this.authenticationService = authenticationService;
     }
 
     @GetMapping
     public String login() {
+        boolean isAuthenticated = authenticationService.isAuthenticated();
+        if (isAuthenticated) {
+            return "redirect:/";
+        }
         return "login";
     }
 

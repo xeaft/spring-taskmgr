@@ -14,6 +14,18 @@ function validateFormDataCharacters(instance, formData) {
     return true;
 }
 
+function createErrorMessage(form, message) {
+    let errorMessage = null;
+
+    errorMessage = document.getElementById("errorText") || document.createElement("p");
+    errorMessage.id = "errorText";
+    errorMessage.innerText = message;
+    errorMessage.style.color = "red";
+    errorText.style.fontSize = "1.5rem";
+    form.appendChild(errorMessage);
+    form.reset();
+}
+
 forms.forEach(function(form) {
     form.addEventListener('submit', function(event) {
         event.preventDefault();
@@ -22,10 +34,7 @@ forms.forEach(function(form) {
         let formValid = validateFormDataCharacters("username", formData) && validateFormDataCharacters("task", formData);
 
         if (!formValid) {
-            let errorMessage = document.createElement("p");
-            errorMessage.textContent = "Invalid characters, use only letters and numbers";
-            errorMessage.style.color = "red";
-            form.appendChild(errorMessage);
+            createErrorMessage(form, "Invalid characters, use only letters and numbers");
             form.reset();
             return;
         }

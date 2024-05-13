@@ -11,7 +11,7 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/register")
 public class RegisterController {
-    private UserRepository userRepository;
+    protected UserRepository userRepository;
 
     public RegisterController(UserRepository userService) {
         this.userRepository = userService;
@@ -23,12 +23,15 @@ public class RegisterController {
 
     @PostMapping
     public String register(@RequestParam("username") String name, @RequestParam("password") String password) {
-        // TODO: password security and tell people if their name is taken (JS)
-
         String pattern = "[a-zA-Z0-9]+";
         boolean isUsernameValid = name.matches(pattern);
+
         if (!isUsernameValid) {
             return "redirect:/register?error=nameInvalid";
+        }
+
+        if (name.length() < 3) {
+            return "redirect:/register?error=nameTooShort";
         }
 
         Optional<UserDTO> users = userRepository.findByUsername(name);
@@ -40,9 +43,9 @@ public class RegisterController {
             return "redirect:/register?error=passwordTooShort";
         }
 
-        password = BCrypt.hashpw(password, BCrypt.gensalt());
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        UserDTO newUser = new UserDTO(name, password);
+        UserDTO newUser = new UserDTO(name, hashedPassword);
         userRepository.save(newUser);
 
         return "redirect:/login";

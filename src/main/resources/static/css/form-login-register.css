@@ -1,0 +1,10 @@
+#center-form-island {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20%;
+    height: fit-content;
+    border-radius: 10px;
+    padding: 20px;
+}
