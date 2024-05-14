@@ -25,9 +25,11 @@ public class LoginController {
     @GetMapping
     public String login() {
         boolean isAuthenticated = authenticationService.isAuthenticated();
+
         if (isAuthenticated) {
             return "redirect:/";
         }
+
         return "login";
     }
 

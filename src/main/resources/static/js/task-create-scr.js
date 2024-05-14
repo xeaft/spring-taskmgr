@@ -11,5 +11,5 @@ function showTaskCreate() {
 }
 
 document.getElementById("task-create-form").addEventListener("input", function (ev) {
-    document.getElementById("task-create-form").querySelector("button").disabled = (event.target.value.length > 0);
+    document.getElementById("task-create-form").querySelector("button").disabled = event.target.value.length <= 0;
 });

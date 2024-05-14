@@ -23,7 +23,7 @@ public class TaskHomeController {
     @PostMapping("/create")
     public String createTask(@RequestParam String task) {
         if (task == null || task.isEmpty() || task.length() > 50) {
-            return "/tasks/create";
+            return "/tasks";
         }
 
         List<Task> tasks = taskRepository.findAll();
@@ -31,7 +31,7 @@ public class TaskHomeController {
         // TODO: again, add clientside JS validation
         for (Task task1 : tasks) {
             if (task1.getName().equals(task)) {
-                return "/tasks/create";
+                return "/tasks";
             }
         }
 
