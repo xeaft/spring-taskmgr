@@ -2,19 +2,23 @@ package dev.kvejp.taskmgr.controller;
 
 import dev.kvejp.taskmgr.entity.UserDTO;
 import dev.kvejp.taskmgr.repository.UserRepository;
+import dev.kvejp.taskmgr.service.UserDataValidationService;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/register")
 public class RegisterController {
     protected UserRepository userRepository;
+    protected UserDataValidationService userDataValidationService;
 
-    public RegisterController(UserRepository userService) {
+    public RegisterController(UserRepository userService, UserDataValidationService userDataValidationService) {
         this.userRepository = userService;
+        this.userDataValidationService = userDataValidationService;
     }
     @GetMapping
     public String register() {
@@ -22,25 +26,14 @@ public class RegisterController {
     }
 
     @PostMapping
-    public String register(@RequestParam("username") String name, @RequestParam("password") String password) {
-        String pattern = "[a-zA-Z0-9]+";
-        boolean isUsernameValid = name.matches(pattern);
-
-        if (!isUsernameValid) {
-            return "redirect:/register?error=nameInvalid";
+    public String register(@RequestParam("username") String name, @RequestParam("password") String password, @RequestParam("repeatpassword") String repeatpassword) {
+        if (!password.equals(repeatpassword)) {
+            return "redirect:/register?error=passwordsDontMatch";
         }
 
-        if (name.length() < 3) {
-            return "redirect:/register?error=nameTooShort";
-        }
-
-        Optional<UserDTO> users = userRepository.findByUsername(name);
-        if (users.isPresent()) {
-            return "redirect:/register?error=nameTaken";
-        }
-
-        if (password.length() < 8) {
-            return "redirect:/register?error=passwordTooShort";
+        String passwordError = userDataValidationService.isValid(name, password);
+        if (!passwordError.isEmpty()) {
+            return "redirect:/register?error=" + passwordError;
         }
 
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());

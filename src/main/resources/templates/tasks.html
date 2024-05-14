@@ -11,22 +11,34 @@
     <title>Dashboard - Tasks</title>
 </head>
 <body data-bs-theme="dark">
-<nav class="navbar navbar-expand-lg bg-dark">
+<nav class="navbar navbar-expand-lg bg-darker px-navbar mb-3">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Task Manager</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- logged in user navbar -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="isAuthenticated()">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/tasks">Tasks</a>
+                    <a class="nav-link" href="/tasks">Tasks</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/settings">Settings</a>
                 </li>
+            </ul>
+
+            <!-- anonymous user navbar -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="isAnonymous()">
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Login/Register</a>
+                    <a class="nav-link" href="/features">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/pricing">Pricing</a>
                 </li>
             </ul>
-            <p sec:authentication="name" class="navbar-text">
+            <p sec:authentication="name" sec:authorize="isAuthenticated()">
+        </div>
+        <div sec:authorize="isAnonymous()">
+            <a class="btn btn-outline-secondary" href="/login">Login</a>
+            <a class="btn btn-primary" href="/register">Register</a>
         </div>
     </div>
 </nav>
