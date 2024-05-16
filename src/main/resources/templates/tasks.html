@@ -35,7 +35,7 @@
                     <a class="nav-link" href="/pricing">Pricing</a>
                 </li>
             </ul>
-            <p sec:authentication="name" sec:authorize="isAuthenticated()">
+            <p sec:authentication="name" sec:authorize="isAuthenticated()" class="mb-0">
         </div>
         <div sec:authorize="isAnonymous()">
             <a class="btn btn-outline-secondary" href="/login">Login</a>

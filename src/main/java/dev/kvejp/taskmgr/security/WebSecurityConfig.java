@@ -41,7 +41,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-            .requestMatchers("/", "/login", "/register", "/js/**", "/css/**").permitAll() // TODO: fix the directory crawling vulnerability
+            .requestMatchers("/", "/login", "/register", "/js/**", "/css/**", "/features", "/pricing").permitAll() // TODO: fix the directory crawling vulnerability
             .anyRequest().authenticated()).formLogin((form) -> form
             .loginPage("/login")
             .permitAll())

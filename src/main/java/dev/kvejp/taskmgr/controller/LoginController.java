@@ -35,8 +35,6 @@ public class LoginController {
 
     @PostMapping
     public String loginPost(@RequestParam("username") String name, @RequestParam("password") String password) {
-        // TODO: password hashing, just about everywhere
-
         List<UserDTO> users = userRepository.findAll();
 
         if (users.stream().anyMatch(u -> u.getUsername().equals(name) && u.getPassword().equals(password))) {

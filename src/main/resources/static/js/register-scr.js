@@ -54,6 +54,10 @@ registerForm.addEventListener("input", (event) => {
     let usernameMeetsLength = usernamePrompt.value.length >= 3 && usernamePrompt.value.length <= 16;
     let usernameValid = usernameMeetsRegex && usernameMeetsLength;
 
+
+    passPrompt.disabled = !usernameValid;
+
+
     let errorType = "";
 
     if (!passMatch && pass1Valid) {
