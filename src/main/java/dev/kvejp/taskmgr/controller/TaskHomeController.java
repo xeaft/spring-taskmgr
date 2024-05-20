@@ -4,11 +4,15 @@ import dev.kvejp.taskmgr.entity.Task;
 import dev.kvejp.taskmgr.entity.UserDTO;
 import dev.kvejp.taskmgr.repository.TaskRepository;
 import dev.kvejp.taskmgr.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/tasks")
@@ -26,27 +30,29 @@ public class TaskHomeController {
             return "/tasks";
         }
 
-        List<Task> tasks = taskRepository.findAll();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
 
-        // TODO: again, add clientside JS validation
-        for (Task task1 : tasks) {
+        List<Task> tasks = taskRepository.findAll();
+        List<Task> userTasks = filterTasksForUser(name, tasks);
+
+        // TODO: add clientside JS validation
+        for (Task task1 : userTasks) {
             if (task1.getName().equals(task)) {
-                return "/tasks";
+                return "redirect:/tasks?error=taskExists";
             }
         }
 
+        Optional<UserDTO> OptionalUser = userRepository.findByUsername(name);
 
-        // TODO: login stuff...
-        List<UserDTO> users = userRepository.findAll();
-        UserDTO user = users.get(0);
-
-        if (user == null) {
-            return "/register";
+        if (OptionalUser.isPresent()) {
+            UserDTO user = OptionalUser.get();
+            Task newTask = new Task(user, task);
+            taskRepository.save(newTask);
+            return "redirect:/tasks";
         }
 
-        Task newTask = new Task(user, task);
-        taskRepository.save(newTask);
-        return "redirect:/tasks";
+        return "redirect:/register";
     }
 
     @PostMapping("/delete/{id}")
@@ -56,8 +62,18 @@ public class TaskHomeController {
 
     @GetMapping
     public String listTasks(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+
         List<Task> tasks = taskRepository.findAll();
-        model.addAttribute("tasks", tasks);
+        List<Task> userTasks = filterTasksForUser(name, tasks);
+        model.addAttribute("tasks", userTasks);
+
         return "tasks";
+    }
+    public List<Task> filterTasksForUser(String username, List<Task> tasks) {
+        return tasks.stream()
+                .filter(task -> task.getOwner().getUsername().equals(username))
+                .collect(Collectors.toList());
     }
 }

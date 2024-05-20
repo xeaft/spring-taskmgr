@@ -1,7 +1,6 @@
 package dev.kvejp.taskmgr.service;
 
 import dev.kvejp.taskmgr.repository.UserRepository;
-import jdk.swing.interop.SwingInterOpUtils;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -13,16 +13,10 @@ public class Task {
     @JoinColumn(name = "OWNER_ID", nullable = false)
     protected UserDTO owner;
 
-    @Column(name = "TASK_NAME", unique = true, nullable = false)
+    @Column(name = "TASK_NAME", nullable = false)
     protected String taskName;
 
     public Task(){}
-
-    public Task(UserDTO owner) {
-        this.owner = owner;
-        // TODO: number the untitled tasks for name duplication
-        this.taskName = "Untitled";
-    }
 
     public Task(UserDTO owner, String taskName) {
         this.owner = owner;

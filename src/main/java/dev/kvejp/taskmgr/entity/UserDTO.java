@@ -20,6 +20,9 @@ public class UserDTO {
 //    @Column(name = "USER_ROLE", nullable = false)
     protected String role; // TODO: role class
 
+    @OneToMany(mappedBy = "owner")
+    public List<Setting> settings = new ArrayList<>();
+
     public List<String> extraPermissions = new ArrayList<>();
 
     @OneToMany(mappedBy = "owner")

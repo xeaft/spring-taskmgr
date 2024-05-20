@@ -49,7 +49,6 @@
         <h2 class="form-signin-heading">Please sign in</h2>
         <form th:action="@{/login}" method="post" class="form-signin">
             <div class="form-group mt-2" id="regDiv">
-                <label class="form-label">Login</label>
                 <p id="errorText"></p>
                 <input type="text" class="form-control mt-2" id="username" name="username" placeholder="Username" th:value="${username}" required autofocus>
                 <input type="password" class="form-control mt-2" id="password" name="password" placeholder="Password" th:value="${password}" required disabled>
