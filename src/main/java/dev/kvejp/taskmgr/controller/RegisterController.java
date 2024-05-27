@@ -2,7 +2,7 @@ package dev.kvejp.taskmgr.controller;
 
 import dev.kvejp.taskmgr.entity.UserDTO;
 import dev.kvejp.taskmgr.repository.UserRepository;
-import dev.kvejp.taskmgr.service.UserDataValidationService;
+import dev.kvejp.taskmgr.utils.UserDataValidator;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/register")
 public class RegisterController {
     protected UserRepository userRepository;
-    protected UserDataValidationService userDataValidationService;
+    protected UserDataValidator userDataValidationService;
 
-    public RegisterController(UserRepository userService, UserDataValidationService userDataValidationService) {
+    public RegisterController(UserRepository userService, UserDataValidator userDataValidationService) {
         this.userRepository = userService;
         this.userDataValidationService = userDataValidationService;
     }

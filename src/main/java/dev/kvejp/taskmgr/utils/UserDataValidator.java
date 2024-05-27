@@ -1,13 +1,13 @@
-package dev.kvejp.taskmgr.service;
+package dev.kvejp.taskmgr.utils;
 
 import dev.kvejp.taskmgr.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDataValidationService {
+public class UserDataValidator {
     protected UserRepository userRepository;
 
-    public UserDataValidationService(UserRepository userService) {
+    public UserDataValidator(UserRepository userService) {
         this.userRepository = userService;
     }
     public String isValid(String username, String password) {

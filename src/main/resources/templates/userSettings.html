@@ -33,7 +33,12 @@
                     <a class="nav-link" href="/pricing">Pricing</a>
                 </li>
             </ul>
-            <p sec:authentication="name" sec:authorize="isAuthenticated()" class="mb-0">
+            <div class="d-flex flex-row" sec:authorize="isAuthenticated()">
+                <div class="rounded-circle pfp">
+                    <!-- <p th:text="${#authentication.getPrincipal().getName()}"></p> -->
+                </div>
+                <a class="usrlink" href="/users/USERID"><p sec:authentication="name" class="mb-0"></p></a>
+            </div>
         </div>
         <div sec:authorize="isAnonymous()">
             <a class="btn btn-outline-secondary" href="/login">Login</a>

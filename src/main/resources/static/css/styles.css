@@ -11,3 +11,12 @@
     padding-left: 15vw;
     padding-right: 15vw;
 }
+
+.usrlink {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.pfp {
+    padding-right: 5px;
+}
