@@ -16,7 +16,6 @@
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Task Manager</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- logged in user navbar -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="isAuthenticated()">
                 <li class="nav-item">
                     <a class="nav-link" href="/tasks">Tasks</a>
@@ -25,26 +24,12 @@
                     <a class="nav-link" href="/settings">Settings</a>
                 </li>
             </ul>
-
-            <!-- anonymous user navbar -->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="isAnonymous()">
-                <li class="nav-item">
-                    <a class="nav-link" href="/features">Features</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/pricing">Pricing</a>
-                </li>
-            </ul>
-            <div class="d-flex flex-row" sec:authorize="isAuthenticated()">
-                <div class="rounded-circle pfp">
-                    <!-- <p th:text="${#authentication.getPrincipal().getName()}"></p> -->
-                </div>
-                <a class="usrlink" href="/users/USERID"><p sec:authentication="name" class="mb-0"></p></a>
-            </div>
         </div>
-        <div sec:authorize="isAnonymous()">
-            <a class="btn btn-outline-secondary" href="/login">Login</a>
-            <a class="btn btn-primary" href="/register">Register</a>
+        <div class="d-flex flex-row pfp-container" sec:authorize="isAuthenticated()">
+            <a class="usrlink" href="/profile"><div class="rounded-circle pfp">
+                <p sec:authentication="name" class="user-pfp"></p>
+            </div></a>
+            <a class="usrlink" href="/profile"><p sec:authentication="name" class="mb-0"></p></a>
         </div>
     </div>
 </nav>
@@ -60,10 +45,10 @@
         </thead>
         <tbody>
         <tr th:each="task : ${tasks}">
-            <td th:text="${task.name}"></td>
+            <td class="task-name"th:text="${task.name}"></td>
             <td th:text="${task.dateCreated}"></td>
-            <td th:text="${task.completed}"></td>
-            <td class="td-edit"><button class="btn btn-success btn-edit">Edit</button></td>
+            <td th:text="${task.id}"></td>
+            <td><button th:attr="onclick='window.location.href=\'/tasks/edit?id=' + ${task.id} + '\''" class="btn btn-success btn-edit">Edit</button></td>
         </tr>
         </tbody>
     </table>
@@ -78,6 +63,7 @@
                 <h2 class="text-center">Create Task</h2>
                 <input class="form-control-lg" type="text" name="task" placeholder="Task name" id="task-name">
                 <button type="submit" class="btn btn-primary btn-lg" disabled>Create</button>
+                <label id="error-text" class="text-danger" style="display: none;">name already exists</label>
             </form>
         </div>
     </div>

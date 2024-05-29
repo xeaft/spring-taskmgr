@@ -2,7 +2,9 @@ package dev.kvejp.taskmgr.controller;
 
 import dev.kvejp.taskmgr.entity.UserDTO;
 import dev.kvejp.taskmgr.repository.UserRepository;
-import dev.kvejp.taskmgr.service.AuthenticationService;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,16 +17,15 @@ import java.util.List;
 @RequestMapping("/login")
 public class LoginController {
     protected final UserRepository userRepository;
-    protected final AuthenticationService authenticationService;
 
-    public LoginController(UserRepository userService, AuthenticationService authenticationService) {
+    public LoginController(UserRepository userService) {
         this.userRepository = userService;
-        this.authenticationService = authenticationService;
     }
 
     @GetMapping
     public String login() {
-        boolean isAuthenticated = authenticationService.isAuthenticated();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAuthenticated = !(auth instanceof AnonymousAuthenticationToken);
 
         if (isAuthenticated) {
             return "redirect:/";

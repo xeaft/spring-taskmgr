@@ -14,7 +14,6 @@ public class UserSettingsController {
 
     @PostMapping
     public String changeSetting(@RequestParam("setting") String setting, @RequestParam("value") String value) {
-        System.out.println("Setting changed: " + setting + " to " + value);
         return "index";
     }
 }

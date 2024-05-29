@@ -3,6 +3,9 @@ package dev.kvejp.taskmgr.controller;
 import dev.kvejp.taskmgr.entity.UserDTO;
 import dev.kvejp.taskmgr.repository.UserRepository;
 import dev.kvejp.taskmgr.utils.UserDataValidator;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +25,14 @@ public class RegisterController {
     }
     @GetMapping
     public String register() {
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        boolean isAuthenticated = !(auth instanceof AnonymousAuthenticationToken);
+
+        if (isAuthenticated) {
+            return "redirect:/";
+        }
+
         return "register";
     }
 

@@ -36,7 +36,6 @@ public class TaskHomeController {
         List<Task> tasks = taskRepository.findAll();
         List<Task> userTasks = filterTasksForUser(name, tasks);
 
-        // TODO: add clientside JS validation
         for (Task task1 : userTasks) {
             if (task1.getName().equals(task)) {
                 return "redirect:/tasks?error=taskExists";

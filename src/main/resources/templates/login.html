@@ -11,22 +11,11 @@
     <link th:href="@{/css/form-login-register.css}" rel="stylesheet">
     <title>Task Manager - Login</title>
 </head>
-<body data-bs-theme="dark">
+<body data-bs-theme="dark" sec:authorize="isAnonymous()">
 <nav class="navbar navbar-expand-lg bg-darker px-navbar mb-3">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Task Manager</a>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- logged in user navbar -->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="isAuthenticated()">
-                <li class="nav-item">
-                    <a class="nav-link" href="/tasks">Tasks</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/settings">Settings</a>
-                </li>
-            </ul>
-
-            <!-- anonymous user navbar -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" sec:authorize="isAnonymous()">
                 <li class="nav-item">
                     <a class="nav-link" href="/features">Features</a>
@@ -35,17 +24,9 @@
                     <a class="nav-link" href="/pricing">Pricing</a>
                 </li>
             </ul>
-            <div class="d-flex flex-row" sec:authorize="isAuthenticated()">
-                <div class="rounded-circle pfp">
-                    <!-- <p th:text="${#authentication.getPrincipal().getName()}"></p> -->
-                </div>
-                <a class="usrlink" href="/users/USERID"><p sec:authentication="name" class="mb-0"></p></a>
-            </div>
         </div>
-        <div sec:authorize="isAnonymous()">
-            <a class="btn btn-outline-secondary" href="/login">Login</a>
-            <a class="btn btn-primary" href="/register">Register</a>
-        </div>
+        <a class="btn btn-outline-secondary" href="/login">Login</a>
+        <a class="btn btn-primary" href="/register">Register</a>
     </div>
 </nav>
 

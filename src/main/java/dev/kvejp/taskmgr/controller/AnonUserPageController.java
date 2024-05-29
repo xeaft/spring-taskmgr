@@ -11,9 +11,4 @@ public class AnonUserPageController {
     public String features() {
         return "features";
     }
-
-    @GetMapping("/pricing") // not gonna be in the final version
-    public String pricing() {
-        return "pricing";
-    }
 }
