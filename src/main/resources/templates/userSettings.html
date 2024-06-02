@@ -26,7 +26,7 @@
             <div class="d-flex flex-row pfp-container" sec:authorize="isAuthenticated()">
                 <a class="usrlink" href="/profile">
                     <div class="rounded-circle pfp" th:style="'background-color: ' + ${user.profileColor}">
-                        <p th:if="${!user.hasProfilePic}" sec:authentication="name" class="user-pfp" id="user-pfp-txt"></p>
+                        <p th:if="${!user.hasProfilePic}" sec:authentication="name" class="user-pfp user-pfp-txt"></p>
                         <img th:if="${user.hasProfilePic}" th:src="@{/uploads/__${user.profilePic}__}" class="user-pfp rounded-circle pfp-image">
                     </div>
                 </a>
@@ -44,17 +44,32 @@
 <!--    <button type="submit" class="btn btn-primary">Submit</button>-->
 <!--</form>-->
 
-<p id="error-text"></p>
-<form action="#" th:action="@{/upload}" method="post" enctype="multipart/form-data">
-    <div class="flex-column form-group">
-        <label>Upload a profile picture</label>
-        <input type="file" name="file" accept="image/*"/>
-        <button type="submit">Upload</button>
+<header>
+    <div class="container-fluid flex-row">
+        <div class="rounded-circle pfp" th:style="'background-color: ' + ${user.profileColor}">
+            <p th:if="${!user.hasProfilePic}" sec:authentication="name" class="user-pfp user-pfp-txt"></p>
+            <img th:if="${user.hasProfilePic}" th:src="@{/uploads/__${user.profilePic}__}" class="user-pfp rounded-circle pfp-image">
+        </div>
+        <div>
+            <p sec:authentication="name"></p>
+        </div>
     </div>
-</form>
+</header>
+<hr>
+<main class="px-navbar">
+    <p id="error-text"></p>
+    <form action="#" th:action="@{/upload}" method="post" enctype="multipart/form-data">
+        <div class="flex-column form-group">
+            <label class="form-label">Upload a profile picture</label>
+            <input class="form-control" type="file" name="file" accept="image/*"/>
+            <button type="submit" class="btn btn-primary my-2">Upload</button>
+        </div>
+    </form>
+    <br>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+</main>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit" class="btn btn-danger">Logout</button>
-</form>
 </body>
 </html>

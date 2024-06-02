@@ -2,6 +2,7 @@ let registerForm = document.getElementById("regDiv");
 
 let hasError = window.location.href.includes("?error=");
 let errorMessage = hasError ? window.location.href.split("?error=")[1] : "";
+errorMessage = errorMessage.split("&")[0];
 
 let errorMessages = {
     "passwordTooShort": "Password must be at least 8 characters long",
