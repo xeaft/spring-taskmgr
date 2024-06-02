@@ -68,6 +68,13 @@ public class TaskHomeController {
         List<Task> userTasks = filterTasksForUser(name, tasks);
         model.addAttribute("tasks", userTasks);
 
+        Optional<UserDTO> OptionalUser = userRepository.findByUsername(name);
+
+        if (OptionalUser.isPresent()) {
+            UserDTO user = OptionalUser.get();
+            model.addAttribute("user", user);
+        }
+
         return "tasks";
     }
     public List<Task> filterTasksForUser(String username, List<Task> tasks) {

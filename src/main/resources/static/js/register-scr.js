@@ -76,7 +76,6 @@ registerForm.addEventListener("input", (event) => {
         errorType = "passwordTooLong";
     }
 
-
     if (!usernameValid) {
         errorType = "nameInvalid";
     }

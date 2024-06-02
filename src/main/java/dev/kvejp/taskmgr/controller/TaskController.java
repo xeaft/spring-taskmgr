@@ -40,8 +40,9 @@ public class TaskController {
             return "tasks";
         }
 
-       model.addAttribute("task", task);
-       model.addAttribute("owner", taskOwner);
+        model.addAttribute("task", task);
+        model.addAttribute("owner", taskOwner);
+        model.addAttribute("user", taskOwner);
 
         return "openedTask";
     }

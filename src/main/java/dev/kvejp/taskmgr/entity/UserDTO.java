@@ -14,11 +14,16 @@ public class UserDTO {
 
     @Column(nullable=false, unique=true)
     protected String username;
-
+    @Column(name = "PASSWORD", nullable = false)
     protected String password;
-
-//    @Column(name = "USER_ROLE", nullable = false)
-    protected String role; // TODO: role class
+    @Column(name = "PROFILE_COLOR", nullable = false)
+    protected String profileColor;
+    @Column(name = "PROFILE_PICTURE")
+    protected String profilePic = "";
+    @Column(name = "HAS_PROFILE_PIC", nullable = false)
+    protected boolean hasProfilePic;
+    @Column(name = "USER_ROLE", nullable = false)
+    protected String role;
 
     @OneToMany(mappedBy = "owner")
     public List<Setting> settings = new ArrayList<>();
@@ -30,13 +35,13 @@ public class UserDTO {
 
     public UserDTO() {}
 
-    public UserDTO(String username, String password) {
+    public UserDTO(String username, String password, String profileColor) {
         this.username = username;
         this.password = password;
-    }
-
-    public UserDTO(String username) {
-        this.username = username;
+        this.profileColor = profileColor;
+        this.hasProfilePic = false;
+        this.profilePic = "";
+        this.role = "user";
     }
 
     public String getUsername() {
@@ -53,5 +58,24 @@ public class UserDTO {
 
     public void setPassword(String encode) {
         this.password = encode;
+    }
+
+    public String getProfileColor() {
+        return profileColor;
+    }
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public boolean getHasProfilePic() {
+        return hasProfilePic;
+    }
+
+    public void setHasProfilePic(boolean hasProfilePic) {
+        this.hasProfilePic = hasProfilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
     }
 }
