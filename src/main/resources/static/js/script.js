@@ -1,6 +1,7 @@
-let pfpText = document.getElementsByClassName("user-pfp")[0];
+let pfpTexts = document.getElementsByClassName("user-pfp");
 
-if (pfpText && pfpText.tagName.toLowerCase() === "p") {
-    pfpText.innerText = pfpText.innerText[0].toUpperCase()
+for (let pfpText of pfpTexts) {
+    if (pfpText.tagName.toLowerCase() === "p") {
+        pfpText.innerText = pfpText.innerText[0].toUpperCase()
+    }
 }
-

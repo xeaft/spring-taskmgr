@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,7 +28,7 @@ public class TaskController {
         Task task = taskRepository.findById(numTaskId).orElse(null);
 
         if (task == null) {
-            return "tasks";
+            return "redirect:/tasks";
         }
 
         UserDTO taskOwner = task.getOwner();
@@ -37,7 +38,7 @@ public class TaskController {
         String currentUsername = auth.getName();
 
         if (!currentUsername.equals(ownerUsername)) {
-            return "tasks";
+            return "redirect:/tasks";
         }
 
         model.addAttribute("task", task);

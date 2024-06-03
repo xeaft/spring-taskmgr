@@ -52,4 +52,10 @@ public class Task {
     public boolean isCompleted() {
         return completed;
     }
+    public void setName(String taskName) {
+        this.taskName = taskName;
+    }
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 }
