@@ -66,10 +66,22 @@
             <button type="submit" class="btn btn-primary my-2">Upload</button>
         </div>
     </form>
+
     <br>
+    <form th:each="setting : ${user.settings}" th:action="@{/settings}" method="post" class="form-check form-switch togglesetting">
+        <input class="form-check-input" type="checkbox" th:id="${setting.name}" th:checked="${setting.value == 'true'}">
+        <input name="userId" type="hidden" th:value="${user.id}">
+        <input name="setting" th:value="${setting.name}" type="hidden">
+        <input name="enabled" th:value="${setting.value}" type="hidden">
+        <label class="form-check-label" th:text="${setting.name}">Test setting</label>
+    </form>
+
+    <br>
+
     <form th:action="@{/logout}" method="post">
         <button type="submit" class="btn btn-danger">Logout</button>
     </form>
+
 </main>
 
 </body>

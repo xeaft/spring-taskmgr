@@ -1,32 +1,21 @@
-let docs = document.getElementsByClassName('settingsForm');
+settings = document.getElementsByClassName("togglesetting");
 
-for (let doc of docs) {
-    doc.addEventListener('submit', function(event) {
-        event.preventDefault();
+for (let i = 0; i < settings.length; i++) {
+    settings[i].addEventListener("change", function () {
 
-        const checkbox = document.getElementById('firstSetting');
-        const csrfCookie = document.querySelector('[name="_csrf"]').value;
+        let checkbox = this.querySelector("input[type=checkbox]");
 
-        const payload = {
-            _csrf: csrfCookie,
-            name: checkbox.name,
-            value: checkbox.checked.toString(),
-        };
 
-        fetch('/settings', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfCookie
-            },
-            body: JSON.stringify(payload)
-        }).then(response => {
-            if (!response.ok) {
-                console.log('Error: ' + response.statusText);
-                return;
-           }
-        }).catch(error => {
-            console.log('Error: ' + error);
+        this.querySelector("input[name=enabled]").value = checkbox.checked;
+
+
+        let form = this.closest("form");
+        let url = form.getAttribute("action");
+        let data = new FormData(form);
+
+        fetch(url, {
+            method: "POST",
+            body: data
         });
     });
 }

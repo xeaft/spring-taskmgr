@@ -28,8 +28,6 @@ public class UserDTO {
     @OneToMany(mappedBy = "owner")
     public List<Setting> settings = new ArrayList<>();
 
-    public List<String> extraPermissions = new ArrayList<>();
-
     @OneToMany(mappedBy = "owner")
     public List<Task> tasks = new ArrayList<>();
 
@@ -77,5 +75,18 @@ public class UserDTO {
 
     public void setProfilePic(String profilePic) {
         this.profilePic = profilePic;
+    }
+
+    public Setting getSetting(String name) {
+        for (Setting setting : settings) {
+            if (setting.getName().equals(name)) {
+                return setting;
+            }
+        }
+        return null;
+    }
+
+    public List<Setting> getSettings() {
+        return settings;
     }
 }

@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "SETTINGS")
 public class Setting {
-    // TODO: use enums, find out how to use enums in spring
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
@@ -22,8 +20,25 @@ public class Setting {
     protected String value;
 
     public Setting() {};
-    public Setting(String name, String value) {
+    public Setting(String name, String value, UserDTO owner) {
+        this.owner = owner;
         this.name = name;
         this.value = value;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public Long getId() {
+        return id;
     }
 }

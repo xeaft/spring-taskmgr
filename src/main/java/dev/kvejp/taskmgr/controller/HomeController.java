@@ -7,12 +7,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/settings")
 public class HomeController {
     protected final UserRepository userRepository;
 
@@ -31,6 +29,6 @@ public class HomeController {
             model.addAttribute("user", user);
         }
 
-        return "userSettings";
+        return "index";
     }
 }

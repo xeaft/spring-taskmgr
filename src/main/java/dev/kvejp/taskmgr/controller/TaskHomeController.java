@@ -58,11 +58,6 @@ public class TaskHomeController {
         return "redirect:/register";
     }
 
-    @PostMapping("/delete/{id}")
-    public String deleteTask(@PathVariable("id") Long id) {
-        return "redirect:/tasks";
-    }
-
     @GetMapping
     public String listTasks(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
