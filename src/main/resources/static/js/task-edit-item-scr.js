@@ -6,7 +6,7 @@ function getElementPosition(el) {
              bottom: rect.bottom + scrollTop, right: rect.right + scrollLeft };
 }
 
-doElsCollide = function(el1, el2) {
+function doElsCollide(el1, el2) {
     const pos1 = getElementPosition(el1);
     const pos2 = getElementPosition(el2);
 
@@ -16,8 +16,58 @@ doElsCollide = function(el1, el2) {
              pos1.left > pos2.right);
 };
 
-// TODO: save. this. into. the. database.
-document.getElementById("add-item").addEventListener("click", function () {
+let cols = ["To Do", "In Progress", "Completed"];
+
+function getColIndex(col) {
+    return cols.indexOf(col);
+}
+
+let updateForm = document.getElementById("autoform");
+document.getElementById('add-item').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let form = event.target;
+    let formData = new FormData(form);
+
+    fetch(form.action, {
+        method: form.method,
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        let id = data;
+        addVisualItem(id, 0, "");
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+updateForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+
+    fetch('/tasks/moveItem', {
+        method: 'POST',
+        body: formData
+    });
+});
+
+let colContainers = {
+    0: "todo-list",
+    1: "in-progress-list",
+    2: "completed-list"
+}
+
+function addVisualItem(id, column, textContent) {
+    if (column < 0 || column > 2 || typeof column != "number") {
+        column = 0;
+    }
+
+    textContent = textContent.slice(1, -1);
+
+    let columnContainer = document.getElementById(colContainers[column]);
+    let taskListContainer = columnContainer.querySelector(".task-list-content");
+
     let newItem = document.createElement("div");
     newItem.classList.add("task-item");
 
@@ -26,10 +76,11 @@ document.getElementById("add-item").addEventListener("click", function () {
     textField.classList.add("task-item-text");
     textField.type = "text";
     textField.placeholder = "insert something";
+    textField.value = textContent;
     newItem.appendChild(textField);
 
-    document.getElementById("todo-list").querySelector(".task-list-content").appendChild(newItem);
-
+    taskListContainer.appendChild(newItem);
+    newItem.id = id;
 
     let offsetX, offsetY;
     let dropElement = null;
@@ -88,13 +139,25 @@ document.getElementById("add-item").addEventListener("click", function () {
 
             document.querySelectorAll(".task-list-content").forEach(thing => {
                 thing.style.border = "none";
-            })
+            });
+
+            updateForm.querySelector("input[name='taskItemId']").value = id;
+            updateForm.querySelector("input[name='taskItemTargetColumn']").value = getColIndex(dropElement.parentElement.children[0].innerText);
+            updateForm.querySelector("input[name='taskItemTextContent']").value = textField.value;
+            updateForm.querySelector("input[type='submit']").click();
         };
 
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
     });
-});
+
+    textField.addEventListener('blur', function(event) {
+        updateForm.querySelector("input[name='taskItemId']").value = id;
+        updateForm.querySelector("input[name='taskItemTargetColumn']").value = getColIndex(textField.parentElement.parentElement.parentElement.querySelector("p").innerText);
+        updateForm.querySelector("input[name='taskItemTextContent']").value = textField.value;
+        updateForm.querySelector("input[type='submit']").click();
+    });
+}
 
 let taskLists = document.getElementsByClassName("task-list");
 for (let i = 0; i < taskLists.length; i++) {

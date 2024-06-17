@@ -61,3 +61,7 @@ form {
     --webkit-scrollbar-width: none;
     scrollbar-width: none;
 }
+
+.hidden {
+   display: none;
+}

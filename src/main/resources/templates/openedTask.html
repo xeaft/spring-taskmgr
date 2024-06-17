@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <script th:src="@{/js/script.js}" defer></script>
     <script th:src="@{/js/task-edit-checkbox-scr.js}" defer></script>
     <script th:src="@{/js/task-edit-item-scr.js}" defer></script>
@@ -14,60 +16,83 @@
 </head>
 <body data-bs-theme="dark">
     <main>
-            <div id="content">
-                <button class="btn btn-light" id="add-item">+</button>
+        <script type="text/javascript">
+            function addItemWhenPossible(taskId, taskColumn, taskTextContent) {
+                if (typeof addVisualItem === 'function') {
+                document.getElementById("script_" + taskId).remove();
+                    addVisualItem(taskId, taskColumn, taskTextContent);
+                } else {
+                    setTimeout(function() { addItemWhenPossible(taskId, taskColumn, taskTextContent); }, 50);
+                }
+            }
+        </script>
+        <script th:each="item : ${taskItems}"  type="text/javascript" th:inline="javascript" th:id="'script_' + ${item.id}">
+            addItemWhenPossible([[${item.id}]], [[${item.column}]], '[[${item.textContent}]]');
+        </script>
+        <div id="content">
+            <form id="add-item" th:action="@{/task/addItem}" method="post" th:object="${task}">
+                <input type="hidden" name="taskId" th:value="${task.id}">
+                <input type="submit" class="btn btn-light" value="+">
+            </form>
 
-                <div class="container task-list" id="todo-list">
-                    <div class="drag-header">
-                        <p>To Do</p>
-                    </div>
-                    <div class="container task-list-content">
-
-                    </div>
+            <div class="container task-list" id="todo-list">
+                <div class="drag-header">
+                    <p>To Do</p>
                 </div>
-                <div class="container task-list" id="in-progress-list">
-                    <div class="drag-header">
-                        <p>In Progress</p>
-                    </div>
-                    <div class="container task-list-content">
+                <div class="container task-list-content">
 
-                    </div>
                 </div>
+            </div>
+            <div class="container task-list" id="in-progress-list">
+                <div class="drag-header">
+                    <p>In Progress</p>
+                </div>
+                <div class="container task-list-content">
 
-                <div class="container task-list" id="completed-list">
-                    <div class="drag-header">
-                        <p>Completed</p>
-                    </div>
-                    <div class="container task-list-content">
-
-                    </div>
                 </div>
             </div>
 
-            <div id="leftnavbar">
+            <div class="container task-list" id="completed-list">
+                <div class="drag-header">
+                    <p>Completed</p>
+                </div>
+                <div class="container task-list-content">
+
+                </div>
+            </div>
+        </div>
+
+        <div id="leftnavbar">
+            <br>
+            <h4 class="text-center">Task Configuration</h4>
+            <hr>
+            <form th:action="@{/tasks/update}" method="post" class="form-inline py-2" onsubmit="handleSubmit(event)">
+                <input type="hidden" name="id" th:value="${task.id}">
+
+                <label for="taskName">Task Name</label>
+                <input class="form-control py-2" type="text" name="taskName" th:value="${task.name}" id="taskName" placeholder="Task Name">
+
+                <input type="hidden" name="completed" value="false">
+                <input class="form-check-input py-2" type="checkbox" name="completed" id="completed" th:checked="${task.completed}" value="true">
+                <label class="form-check-label py-2" for="completed">Completed</label>
                 <br>
-                <h4 class="text-center">Task Configuration</h4>
-                <hr>
-                <form th:action="@{/tasks/update}" method="post" class="form-inline py-2" onsubmit="handleSubmit(event)">
-                    <input type="hidden" name="id" th:value="${task.id}">
 
-                    <label for="taskName">Task Name</label>
-                    <input class="form-control py-2" type="text" name="taskName" th:value="${task.name}" id="taskName" placeholder="Task Name">
-
-                    <input type="hidden" name="completed" value="false">
-                    <input class="form-check-input py-2" type="checkbox" name="completed" id="completed" th:checked="${task.completed}" value="true">
-                    <label class="form-check-label py-2" for="completed">Completed</label>
-                    <br>
-
-                    <button type="submit" class="btn btn-primary py-2">Update</button>
-                </form>
-                <hr>
-                <form th:action="@{/tasks/delete}" method="post" class="form-inline">
-                    <input type="hidden" name="id" th:value="${task.id}">
-                    <button type="submit" class="btn btn-danger">Delete Task</button>
-                </form>
-            </div>
+                <button type="submit" class="btn btn-primary py-2">Update</button>
+            </form>
+            <hr>
+            <form th:action="@{/tasks/delete}" method="post" class="form-inline">
+                <input type="hidden" name="id" th:value="${task.id}">
+                <button type="submit" class="btn btn-danger">Delete Task</button>
+            </form>
+        </div>
     </main>
+    <form th:action="@{/tasks/moveItem}" id="autoform", method="post">
+        <input type="hidden" name="id" th:value="${task.id}">
+        <input type="hidden" name="taskItemId" value="-1">
+        <input type="hidden" name="taskItemTargetColumn" value="-1">
+        <input type="hidden" name="taskItemTextContent" value="">
+        <input type="submit" class="hidden" value="">
+    </form>
 </body>
 
 </html>

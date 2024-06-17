@@ -1,7 +1,9 @@
 package dev.kvejp.taskmgr.controller;
 
 import dev.kvejp.taskmgr.entity.Task;
+import dev.kvejp.taskmgr.entity.TaskItem;
 import dev.kvejp.taskmgr.entity.UserDTO;
+import dev.kvejp.taskmgr.repository.TaskItemRepository;
 import dev.kvejp.taskmgr.repository.TaskRepository;
 import dev.kvejp.taskmgr.repository.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -19,10 +21,12 @@ import java.util.stream.Collectors;
 public class TaskHomeController {
     protected final TaskRepository taskRepository;
     protected final UserRepository userRepository;
+    protected final TaskItemRepository taskItemRepository;
 
-    public TaskHomeController(TaskRepository taskRepository, UserRepository userRepository) {
+    public TaskHomeController(TaskRepository taskRepository, UserRepository userRepository, TaskItemRepository taskItemRepository) {
         this.taskRepository = taskRepository;
         this.userRepository = userRepository;
+        this.taskItemRepository = taskItemRepository;
     }
     @PostMapping("/create")
     public String createTask(@RequestParam String task) {
